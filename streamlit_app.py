@@ -4,18 +4,14 @@ import base64
 import os
 
 def process_image_link(image_link):
-    # Check if the image link is in base64 format
     if image_link.startswith('data:image'):
-        # Extract base64-encoded image data
         _, encoded_data = image_link.split(',')
         decoded_data = base64.b64decode(encoded_data)
 
-        # Save the decoded image
         image_path = 'uploads/image_from_link.jpg'
         with open(image_path, 'wb') as f:
             f.write(decoded_data)
     else:
-        # If it's a regular URL, download the image
         response = requests.get(image_link)
         image_path = 'uploads/image_from_link.jpg'
         with open(image_path, 'wb') as f:
@@ -25,7 +21,7 @@ def process_image_link(image_link):
 
 def query_detr(filename):
     API_URL_DETR = "https://api-inference.huggingface.co/models/facebook/detr-resnet-50"
-    API_KEY_DETR = "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"  # Replace with your actual API key for DETR
+    API_KEY_DETR = "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"  
     headers_detr = {"Authorization": f"Bearer {API_KEY_DETR}"}
 
     with open(filename, "rb") as f:
@@ -35,7 +31,7 @@ def query_detr(filename):
 
 def generate_poem(labels):
     POEM_API_URL = "https://api-inference.huggingface.co/models/felixhusen/poem"
-    POEM_API_KEY = "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"  # Replace with your actual API key for the poem generator
+    POEM_API_KEY = "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" 
     POEM_HEADERS = {"Authorization": f"Bearer {POEM_API_KEY}"}
 
     # Combine labels into a single sentence
@@ -63,10 +59,8 @@ def main():
     image_link = st.text_input("Paste the link from online:", "")
 
     if st.button("Generate Poem"):
-        # Process the image link and generate output
         output = process_image_link(image_link)
 
-        # Display the output
         st.write("Labels:", output['labels'])
         st.write("Generated Poem:", output['poem_generated'])
 
